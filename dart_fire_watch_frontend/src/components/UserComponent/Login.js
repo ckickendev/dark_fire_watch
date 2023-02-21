@@ -1,7 +1,26 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 export const Login = (props) => {
   const ROOT_BACKEND = "http://localhost:5000";
+  const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
+  const [error, setError] = useState('');
+  const submitLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${ROOT_BACKEND}/auth/login`, loginInfo);
+      console.log(res);
+    } catch (err) {
+      setError(err.response.data.error);
+    }
+  };
+  const changeValue = (e, field) => {
+    console.log(e.target.value);
+    setLoginInfo((loginInfo) => {
+      return { ...loginInfo, [field]: e.target.value };
+    });
+  };
+
   return (
     <div className="container">
       <form action={`${ROOT_BACKEND}/auth/login`} method="POST">
@@ -17,6 +36,8 @@ export const Login = (props) => {
             class="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
+            value={loginInfo.email}
+            onChange={(e) => changeValue(e, "email")}
           />
         </div>
         <div class="mb-3">
@@ -28,9 +49,12 @@ export const Login = (props) => {
             type="password"
             class="form-control"
             id="exampleInputPassword1"
+            value={loginInfo.password}
+            onChange={(e) => changeValue(e, "password")}
           />
         </div>
-        <button type="submit" class="btn btn-primary">
+        <p>{error}</p>
+        <button type="submit" onClick={submitLogin} class="btn btn-primary">
           Submit
         </button>
       </form>

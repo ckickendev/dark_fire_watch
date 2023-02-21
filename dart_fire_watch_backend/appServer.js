@@ -21,7 +21,7 @@ class AppServer {
       throw new Error("ENV CORS not provider!");
     }
     return {
-      origin: configCors.toString().split(","),
+      origin: '*',
       methods: "OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE",
       preflightContinue: false,
       optionsSuccessStatus: 204,
