@@ -1,15 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { redirect } from "react-router-dom";
 
 export const Login = (props) => {
   const ROOT_BACKEND = "http://localhost:5000";
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const submitLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${ROOT_BACKEND}/auth/login`, loginInfo);
-      console.log(res);
+      localStorage.setItem("access_token", res.data.data.access_token);
+      redirect('/home');
     } catch (err) {
       setError(err.response.data.error);
     }

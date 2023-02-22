@@ -8,6 +8,8 @@ const {
 } = require("../exceptions");
 const { User } = require("../models");
 const userServices = require("../services/user.services");
+const authServices = require("../services/auth.services");
+const AuthMiddleware = require("../middlewares/auth.middleware");
 
 class AuthController extends Controller {
   _rootPath = "/auth";
@@ -18,10 +20,27 @@ class AuthController extends Controller {
   }
 
   async login(req, res, next) {
-    res.json({
-      status: 200,
-      message: "Login Success",
-    });
+    try {
+      const { email, _id } = req.user;
+      const payload = {
+        id: _id,
+        email,
+      };
+      const token = await authServices.generateToken(payload);
+      const refreshToken = await authServices.generateRefreshToken(payload);
+
+      return res.json({
+        status: 200,
+        message: "Login Success",
+        data: {
+          access_token: token,
+          refresh_token: refreshToken,
+          user: payload,
+        },
+      });
+    } catch (err) {
+      next(new ServerException(err.message));
+    }
   }
 
   async register(req, res, next) {
@@ -34,6 +53,18 @@ class AuthController extends Controller {
       });
     } catch (error) {
       res.status(404).json({ error: error.message });
+    }
+  }
+
+  async WhoAmI(req, res, next) {
+    try {
+      return res.json({
+        status: 200,
+        message: "success",
+        data: req.user,
+      });
+    } catch (e) {
+      next(new ServerException(error.message));
     }
   }
 
@@ -105,6 +136,7 @@ class AuthController extends Controller {
       this.validateBeforeRegister,
       this.register
     );
+    this._router.get(`${this._rootPath}/whoAmI`, AuthMiddleware, this.WhoAmI);
   }
 }
 
