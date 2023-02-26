@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { Controller } = require("../core");
+const { Controller, ConsoleLogger } = require("../core");
 const {
   NotFoundException,
   BadRequestException,
@@ -28,7 +28,7 @@ class AuthController extends Controller {
       };
       const token = await authServices.generateToken(payload);
       const refreshToken = await authServices.generateRefreshToken(payload);
-
+      ConsoleLogger.info(token);
       return res.json({
         status: 200,
         message: "Login Success",
@@ -57,11 +57,12 @@ class AuthController extends Controller {
   }
 
   async WhoAmI(req, res, next) {
+    const userInfo = req.userInfo;
     try {
       return res.json({
         status: 200,
         message: "success",
-        data: req.user,
+        userInfo: userInfo,
       });
     } catch (e) {
       next(new ServerException(error.message));
@@ -71,6 +72,7 @@ class AuthController extends Controller {
   async validateBeforeLogin(req, res, next) {
     try {
       const { email, password } = req.body;
+      console.log(email, password);
       const user = await User.findOne({ email: email });
       if (!user) {
         throw new NotFoundException("User not found");

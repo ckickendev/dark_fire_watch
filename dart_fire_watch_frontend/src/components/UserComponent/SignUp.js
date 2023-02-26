@@ -25,35 +25,35 @@ export const SignUp = (props) => {
       <form action={`${ROOT_BACKEND}/auth/signup`} method="POST">
         <h1>Sign Up</h1>
         <button onClick={props.changeAuthen}>Login</button>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputEmail1" className="form-label">
             Email address
           </label>
           <input
             type="email"
             name="email"
-            class="form-control"
+            className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             value={loginInfo.email}
             onChange={(e) => changeValue(e, 'email')}
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">
+        <div className="mb-3">
+          <label htmlFor="exampleInputPassword1" className="form-label">
             Password
           </label>
           <input
             type="password"
             name="password"
-            class="form-control"
+            className="form-control"
             id="exampleInputPassword1"
             value={loginInfo.password}
             onChange={(e) => changeValue(e, 'password')}
           />
         </div>
         <p>{error}</p>
-        <button type="submit" onClick={submitLogin} class="btn btn-primary">
+        <button type="submit" onClick={submitLogin} className="btn btn-primary">
           Submit
         </button>
       </form>

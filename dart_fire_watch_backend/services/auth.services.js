@@ -4,16 +4,17 @@ require("dotenv").config();
 
 class AuthService extends Service {
   async generateToken(data) {
+    console.log(process.env.SECRET_KEY);
     return await jwt.sign(data, process.env.SECRET_KEY, {
-      expiresIn: process.env.JWT_EXPIRED,
       algorithm: "HS256",
+      expiresIn: process.env.JWT_EXPIRED,
     });
   }
 
   async generateRefreshToken(data) {
     return await jwt.sign(data, process.env.SECRET_KEY, {
-      expiresIn: process.env.JWT_REFRESH_EXPIRED,
       algorithm: "HS256",
+      expiresIn: process.env.JWT_REFRESH_EXPIRED,
     });
   }
 }

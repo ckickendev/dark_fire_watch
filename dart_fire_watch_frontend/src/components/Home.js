@@ -13,7 +13,7 @@ export const Home = () => {
       await axios
         .get(`${ROOT_BACKEND}/auth/whoAmI`, { headers })
         .then((response) => {
-          console.log(response);
+          setUser(response.data.userInfo.email);
         })
         .catch((error) => {
           console.log(error);
