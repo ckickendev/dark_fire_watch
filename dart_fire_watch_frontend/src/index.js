@@ -9,13 +9,17 @@ import {
 } from "react-router-dom";
 import { Home } from "./components/Home";
 import { Authentication } from './components/AuthComponent/Authentication';
+import { NotFoundPage } from './components/ErrorPage/NotFoundPage';
+import { AccessForbidden } from './components/ErrorPage/AccessForbidden';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/">
-      <Route path="login" element={<Authentication />} />
+    <Route path="/" exact errorElement={<NotFoundPage />} >
+      <Route path="auth" element={<Authentication />} />
+      <Route path="" element={<Home />} />
       <Route path="home" element={<Home />} />
-
+      <Route path="notfound" element={<NotFoundPage />}  />
+      <Route path="forbidden" element={<AccessForbidden />}  />
     </Route>
   )
 );

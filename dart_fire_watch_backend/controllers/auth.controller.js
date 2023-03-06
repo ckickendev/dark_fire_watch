@@ -45,6 +45,7 @@ class AuthController extends Controller {
 
   async register(req, res, next) {
     const { email, password } = req.body;
+    console.log(email, password);
     try {
       await userServices.register(email, password);
       res.json({
@@ -94,10 +95,6 @@ class AuthController extends Controller {
   async validateBeforeRegister(req, res, next) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email: email });
-      if (user) {
-        throw new NotFoundException("User exist!");
-      }
 
       let errorMessage = "";
 
@@ -110,6 +107,11 @@ class AuthController extends Controller {
         }
       }
 
+      const user = await User.findOne({ email: email });
+      if (user) {
+        throw new NotFoundException("User exist!");
+      }
+
       if (email.length < 6) {
         errorMessage = "Email size must larger than 6";
       }
@@ -119,7 +121,7 @@ class AuthController extends Controller {
       }
 
       if (errorMessage) {
-        return next(new NotFoundException("Failure", errorMessage));
+        throw new NotFoundException(errorMessage, errorMessage);
       }
       next();
     } catch (err) {
