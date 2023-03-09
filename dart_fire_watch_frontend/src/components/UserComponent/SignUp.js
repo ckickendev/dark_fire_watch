@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Loading } from "../../utils/loading";
 
 export const SignUp = (props) => {
-  const ROOT_BACKEND = "http://localhost:5000";
+  const ROOT_BACKEND = process.env.REACT_APP_ROOT_BACKEND;
   const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

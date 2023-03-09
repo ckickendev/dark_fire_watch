@@ -23,7 +23,7 @@ export const NotFoundPage = () => {
     });
   });
   const windowWidth = window.innerHeight;
-  const homepage = 'http://localhost:3000/auth'
+  const homepage = process.env.REACT_APP_ROOT_FRONTEND + "/auth";
   return (
     <div className="not_found_page">
       <a

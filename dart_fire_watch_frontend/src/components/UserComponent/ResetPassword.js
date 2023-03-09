@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Loading } from "../../utils/loading";
 export const ResetPassword = (props) => {
-  const ROOT_BACKEND = "http://localhost:5000";
+  const ROOT_BACKEND = process.env.REACT_APP_ROOT_BACKEND;
   const [emailReset, setEmailReset] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
