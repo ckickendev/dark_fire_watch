@@ -7,7 +7,7 @@ const {
   ServerException,
 } = require("../exceptions");
 const { User } = require("../models");
-const userServices = require("../services/user.services");
+const userServices = require("../services/user.services"); 
 const authServices = require("../services/auth.services");
 const AuthMiddleware = require("../middlewares/auth.middleware");
 
@@ -129,6 +129,20 @@ class AuthController extends Controller {
     }
   }
 
+  resetPass = async (req, res, next) => {
+    const email = req.body.email;
+    await userServices.resetpassword(email);
+    return res.json({
+      status: 200,
+      message: "Email sent, check your email ",
+    });
+  };
+
+  resetPasswordLink = async (req, res, next) => {
+    console.log(req.query.token);
+    
+  };
+
   initController() {
     this._router.post(
       `${this._rootPath}/login`,
@@ -141,6 +155,11 @@ class AuthController extends Controller {
       this.register
     );
     this._router.get(`${this._rootPath}/whoAmI`, AuthMiddleware, this.WhoAmI);
+    this._router.get(
+      `${this._rootPath}/resetpasswordlink`,
+      this.resetPasswordLink
+    );
+    this._router.post(`${this._rootPath}/resetpassword`, this.resetPass);
   }
 }
 

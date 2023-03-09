@@ -19,7 +19,6 @@ export const Home = () => {
         .get(`${ROOT_BACKEND}/auth/whoAmI`, { headers })
         .then((response) => {
           setUser(response.data.userInfo.email);
-          navigate("/auth");
         })
         .catch((error) => {
           navigate("/auth");
